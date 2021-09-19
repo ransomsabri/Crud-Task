@@ -3,14 +3,14 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=dp_crud', 'root', '');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$id = $_GET['id'] ?? null;
-if (!$id){
+$name = $_GET['name'] ?? null;
+if (!$name){
     header('Location: index.php');
     exit;
 }
 
-$statement = $pdo->prepare('SELECT * FROM project WHERE id = :id');
-$statement->bindValue(':id', $id);
+$statement = $pdo->prepare('SELECT * FROM department WHERE name = :name');
+$statement->bindValue(':name', $name);
 $statement->execute();
 $department = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $statement = $pdo->prepare('UPDATE department SET name=:name, manager=:manager');
-    if ($errors) {
+    if (!$errors) {
         $statement->bindValue(':name', $name);
         $statement->bindValue(':manager', $manager);
         $statement->execute();

@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container">
     <h1>Add a new Department</h1>
+    <a href="index.php" style="float: right" class="btn btn btn-primary">Back</a>
+    <br><br>
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">
             <?php foreach ($errors as $error): ?>

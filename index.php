@@ -43,8 +43,11 @@ $projects = $statement->fetchAll(PDO::FETCH_ASSOC);
               <td><?php echo $department['name'] ?></td>
               <td><?php echo $department['manager'] ?></td>
               <td>
-                  <a href="edit.php?id=<?php echo $department['id']?>" class="btn btn-sm btn-outline-primary">Edit</a>
-                  <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                  <a href="edit.php?name=<?php echo $department['name']?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                  <form style="display: inline-block" method="post" action="delete_department.php">
+                      <input type="hidden" name="name" value="<?php echo $department['name']?>">
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                  </form>
               </td>
           </tr>
       <?php endforeach; ?>
@@ -76,9 +79,9 @@ $projects = $statement->fetchAll(PDO::FETCH_ASSOC);
               <td><?php echo $project['description'] ?></td>
               <td>
                   <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
-                  <form style="display: inline-block" method="post" action="delete.php">
-                      <input type="hidden" name="id" value="<?php echo $project['id']?>">
-                      <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+                  <form style="display: inline-block" method="post" action="delete_project.php">
+                      <input type="hidden" name="name" value="<?php echo $project['name']?>">
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                   </form>
               </td>
           </tr>
