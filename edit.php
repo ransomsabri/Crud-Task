@@ -4,7 +4,7 @@ $pdo = new PDO('mysql:host=localhost;port=3306;dbname=dp_crud', 'root', '');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $name = $_GET['name'] ?? null;
-if (!$name){
+if (!$name) {
     header('Location: index.php');
     exit;
 }
@@ -28,12 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Please provide the department's name";
     }
 
-    $statement = $pdo->prepare('UPDATE department SET name=:name, manager=:manager');
     if (!$errors) {
+        $statement = $pdo->prepare('UPDATE department SET name = :name, manager = :manager');
         $statement->bindValue(':name', $name);
         $statement->bindValue(':manager', $manager);
         $statement->execute();
+        header('Location: index.php');
     }
+
 }
 ?>
 
@@ -58,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
     <br><br>
-    <form action="add_department.php" method="post">
+    <form action="edit.php" method="post">
         <div class="mb-3">
             <label>Department Name</label>
             <input type="text" class="form-control">
