@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$department) {
         $errors[] = "Please provide the project's department";
     }
-    if ($errors) {
+    if (!$errors) {
         $statement = $pdo->prepare('INSERT INTO project (name, budget, department, description) VALUES (:name, :budget, :department, :description)');
         $statement->bindValue(':name', $name);
         $statement->bindValue(':budget', $budget);

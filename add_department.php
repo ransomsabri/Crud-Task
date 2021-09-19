@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$name) {
         $errors[] = "Please provide the department's name";
     }
-    if ($errors) {
+    if (!$errors) {
         $statement = $pdo->prepare('INSERT INTO department (name, manager) VALUES (:name, :manager)');
 
         $statement->bindValue(':name', $name);
