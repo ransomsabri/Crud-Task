@@ -5,22 +5,28 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $errors = [];
 
+$id = '';
 $name = '';
 $manager = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST ['id'];
     $name = $_POST['name'];
     $manager = $_POST['manager'];
 
     if (!$name) {
         $errors[] = "Please provide the department's name";
     }
+    if (!$id) {
+        $errors[] = "Please provide the department's ID";
+    }
     if (!$errors) {
-        $statement = $pdo->prepare('INSERT INTO department (name, manager) VALUES (:name, :manager)');
-
+        $statement = $pdo->prepare('INSERT INTO department (id, name, manager) VALUES (:id, :name, :manager)');
+        $statement->bindValue(':id', $id);
         $statement->bindValue(':name', $name);
         $statement->bindValue(':manager', $manager);
         $statement->execute();
+        header('Location: index.php');
 
     }
 }
@@ -50,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
     <br><br>
     <form action="add_department.php" method="post">
+        <div class="mb-3">
+            <label>ID</label>
+            <input type="number" name="id" class="form-control">
+        </div>
         <div class="mb-3">
             <label>Department Name</label>
             <input type="text" name="name" class="form-control">

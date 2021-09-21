@@ -3,6 +3,7 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=dp_crud','root','');
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
+
 $name = $_POST['name'] ?? null;
 if (!$name){
     header('Location: index.php');

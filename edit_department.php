@@ -2,40 +2,56 @@
 
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=dp_crud', 'root', '');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$statement = $pdo->prepare('SELECT * FROM department');
+$statement->execute();
+$departments = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$name = $_GET['name'] ?? null;
-if (!$name) {
+
+$statement = $pdo->prepare('SELECT * FROM project ORDER BY id ASC');
+$statement->execute();
+$projects = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$id = $_GET['id'] ?? null;
+if (!$id) {
     header('Location: index.php');
     exit;
 }
 
-$statement = $pdo->prepare('SELECT * FROM department WHERE name = :name');
-$statement->bindValue(':name', $name);
+
+$statement = $pdo->prepare('SELECT * FROM department WHERE id = :id');
+$statement->bindValue(':id', $id);
 $statement->execute();
 $department = $statement->fetch(PDO::FETCH_ASSOC);
 
 
 $errors = [];
 
+$id = $department['id'];
 $name = $department['name'];
 $manager = $department['manager'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'];
     $name = $_POST['name'];
     $manager = $_POST['manager'];
+
 
     if (!$name) {
         $errors[] = "Please provide the department's name";
     }
 
     if (!$errors) {
-        $statement = $pdo->prepare('UPDATE department SET name = :name, manager = :manager');
+
+        $statement = $pdo->prepare('UPDATE department SET name = :name, manager = :manager WHERE id = :id');
+        $statement->bindValue(':id',$id);
         $statement->bindValue(':name', $name);
         $statement->bindValue(':manager', $manager);
+
         $statement->execute();
         header('Location: index.php');
-    }
 
+
+    }
 }
 ?>
 
@@ -60,14 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
     <br><br>
-    <form action="edit.php" method="post">
+    <form action="" method="post">
         <div class="mb-3">
-            <label>Department Name</label>
-            <input type="text" class="form-control">
+            <label>ID</label>
+            <input type="number" name="id" value="<?php echo $department['id']?>" class="form-control">
         </div>
         <div class="mb-3">
-            <label>Department Manager</label>
-            <input type="text" class="form-control">
+            <label>Name</label>
+            <input type="text" name="name" value="<?php echo $department['name']?>" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Manager</label>
+            <input type="text" name="manager" value="<?php echo $department['manager']?>" step=".01" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

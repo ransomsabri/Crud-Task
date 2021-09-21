@@ -8,7 +8,7 @@ $statement->execute();
 $departments = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 
-$statement = $pdo->prepare('SELECT * FROM project');
+$statement = $pdo->prepare('SELECT * FROM project ORDER BY id ASC');
 $statement->execute();
 $projects = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -43,7 +43,7 @@ $projects = $statement->fetchAll(PDO::FETCH_ASSOC);
               <td><?php echo $department['name'] ?></td>
               <td><?php echo $department['manager'] ?></td>
               <td>
-                  <a href="edit.php?name=<?php echo $department['name']?>" class="btn btn-sm btn-outline-primary">Edit</a>
+                  <a href="edit_department.php?id=<?php echo $department['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
                   <form style="display: inline-block" method="post" action="delete_department.php">
                       <input type="hidden" name="name" value="<?php echo $department['name']?>">
                       <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
@@ -72,13 +72,13 @@ $projects = $statement->fetchAll(PDO::FETCH_ASSOC);
       <tbody>
       <?php foreach ($projects as $i => $project):?>
           <tr>
-              <th scope="row"><?php echo $i+1 ?></th>
+              <td><?php echo $project['id']?></td>
               <td><?php echo $project['name'] ?></td>
               <td><?php echo $project['budget'] ?></td>
               <td><?php echo $project['department'] ?></td>
               <td><?php echo $project['description'] ?></td>
               <td>
-                  <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
+                  <a href="edit_project.php?id=<?php echo $project['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
                   <form style="display: inline-block" method="post" action="delete_project.php">
                       <input type="hidden" name="name" value="<?php echo $project['name']?>">
                       <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
